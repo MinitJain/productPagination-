@@ -32,8 +32,10 @@ const ProductList = () => {
   }, [count]);
 
   useEffect(() => {
-    if (products && products.length >= 100) setDisableButton(true);
-  });
+    if (products.length >= 100) {
+      setDisableButton(true);
+    }
+  }, [products]);
 
   if (loading && products.length === 0) {
     // loading state for initial load
@@ -56,13 +58,18 @@ const ProductList = () => {
         )}
       </div>
 
-      <button
-        onClick={() => setCount((prevCount) => prevCount + 1)}
-        className="button-container"
-        disabled={disableButton}
-      >
-        {loading && products.length > 0 ? "Loading more..." : "Load More"}
-      </button>
+      {!disableButton && (
+        <button
+          onClick={() => setCount((prevCount) => prevCount + 1)}
+          className="button-container"
+          disabled={loading}
+        >
+          {loading && products.length > 0 ? "Loading more..." : "Load More"}
+        </button>
+      )}
+      {disableButton && (
+        <div>SIKE, the API only provides 100 products at max !</div>
+      )}
     </div>
   );
 };
